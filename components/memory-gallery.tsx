@@ -64,17 +64,17 @@ export default function MemoryGallery({
                 <Heart className="text-red-500 size-10" />
 
                 <div className="flex items-center gap-2">
+                    <div className="flex flex-col items-end">
+                        <span className="text-sm font-semibold">{users[1].firstName} {users[1].lastName}</span>
+                        <span className="text-xs text-gray-500">{users[1].email}</span>
+                    </div>
+
                     <Avatar>
                         <AvatarFallback>
                             {users[1].firstName.charAt(0)}{users[1].lastName.charAt(0)}
                         </AvatarFallback>
                         <AvatarImage src={users[1].avatar || undefined} alt={`${users[1].firstName} ${users[1].lastName}`} />
                     </Avatar>
-
-                    <div className="flex flex-col">
-                        <span className="text-sm font-semibold">{users[1].firstName} {users[1].lastName}</span>
-                        <span className="text-xs text-gray-500">{users[1].email}</span>
-                    </div>
                 </div>
             </div>
 
