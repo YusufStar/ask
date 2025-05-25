@@ -9,6 +9,8 @@ import UploadModalOpen from "./upload-modal-open";
 import Image from "next/image";
 import { getAsset } from "@/lib/assets-axios";
 import { AnimatePresence, motion } from "framer-motion";
+import { Card, CardContent } from "./ui/card";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Gallery({
     memoryId,
@@ -17,6 +19,16 @@ export default function Gallery({
     memoryId: string;
     placeholderData: Awaited<ReturnType<typeof getMemoryById>>;
 }) {
+    const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>(
+        {}
+    );
+
+    const handleImageLoad = (src: string | undefined) => {
+        if (src) {
+            setLoadedImages((prev) => ({ ...prev, [src]: true }));
+        }
+    };
+
     const [uploadModalOpen, setUploadModalOpen] = useState(false);
     const { data, isPlaceholderData, refetch } = useQuery<Awaited<ReturnType<typeof getMemoryById>>>({
         queryKey: ['memory', memoryId],
@@ -61,18 +73,26 @@ export default function Gallery({
                                             layout: { duration: 0.3 },
                                         }}
                                     >
-                                        <div className="relative w-full h-full">
-                                            <Image
-                                                key={image.id}
-                                                alt={image.id}
-                                                fill
-                                                className="rounded"
-                                                style={{ objectFit: "cover" }}
-                                                src={getAsset(image.image_url)}
-                                                placeholder="blur"
-                                                blurDataURL={getAsset(image.placeholder_url)}
-                                            />
-                                        </div>
+                                        <Card className="p-0! relative w-full h-full overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl group">
+                                            <CardContent className="p-0! relative w-full h-full">
+                                                {!loadedImages[image.id!] && (
+                                                    <div className="absolute inset-0 z-10">
+                                                        <Skeleton className="w-full h-full rounded-lg animate-pulse" />
+                                                    </div>
+                                                )}
+                                                <div className="relative w-full h-full">
+                                                    <Image
+                                                        key={image.id}
+                                                        alt={image.id}
+                                                        fill
+                                                        style={{ objectFit: "cover" }}
+                                                        src={getAsset(image.image_url)}
+                                                        onLoad={() => handleImageLoad(image.id)}
+                                                        className={`object-cover rounded transition-opacity duration-300 ${loadedImages[image.id!] ? "opacity-100" : "opacity-0"}`}
+                                                    />
+                                                </div>
+                                            </CardContent>
+                                        </Card>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
