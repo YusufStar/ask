@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "ad83-2a09-bac5-58c2-4d2-00-7b-61.ngrok-free.app",
+        hostname: "th2f8prs-8000.euw.devtunnels.ms",
       },
     ],
   },
