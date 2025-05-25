@@ -50,20 +50,8 @@ export const uploadAsset = async (file: File): Promise<{ placeholder: string; im
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await assetAxios.post('upload', formData);
+    const response = await assetAxios.post('/upload', formData);
     return response.data;
 };
 
-export const getAsset = async (key: string): Promise<Blob> => {
-    const response = await assetAxios.get(`uploads/assets/${key}`, {
-        responseType: 'blob',
-    });
-    return response.data;
-};
-
-export const getPlaceholder = async (key: string): Promise<Blob> => {
-    const response = await assetAxios.get(`uploads/placeholders/${key}`, {
-        responseType: 'blob',
-    });
-    return response.data;
-};
+export const getAsset = (url: string) => `${process.env.NEXT_PUBLIC_ASSET_API_URL!}${url}`;

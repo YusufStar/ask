@@ -36,7 +36,6 @@ export async function getMyRelationship() {
                     updatedAt: false,
                 }
             },
-            memories: true,
         },
     })
     if (!relationship) {
@@ -83,34 +82,41 @@ export async function getMyShipMemories() {
         throw new Error("User not found")
     }
 
-    const relationship = await prisma.relationShip.findFirst({
+    const memory = await prisma.memories.findMany({
         where: {
-            users: {
-                some: {
-                    clerkId: userId,
-                },
+            RelationShip: {
+                users: {
+                    some: {
+                        clerkId: userId,
+                    }
+                }
             }
         },
-        select: {
-            memories: true,
-            users: true,
-        },
+        include: {
+            RelationShip: {
+                include: {
+                    users: true,
+                }
+            },
+            images: true,
+        }
     })
-    if (!relationship) {
-        return []
+
+    if (!memory) {
+        throw new Error("Memory not found")
     }
 
-    return relationship.memories
+    return memory
 }
 
 export async function getMemoryById(id: string) {
     const { userId } = await auth()
-    if(!userId) {
+    if (!userId) {
         throw new Error("User not authenticated")
     }
 
     const user = await currentUser()
-    if(!user) {
+    if (!user) {
         throw new Error("User not found")
     }
 
@@ -130,10 +136,11 @@ export async function getMemoryById(id: string) {
                 include: {
                     users: true,
                 }
-            }
+            },
+            images: true,
         }
     })
-    if(!memory) {
+    if (!memory) {
         throw new Error("Memory not found")
     }
 

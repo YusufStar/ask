@@ -52,11 +52,25 @@ model Memories {
   content  String
   date     DateTime
   location String?
-  images   String[]
+  images   Assets[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   RelationShip   RelationShip? @relation(fields: [relationShipId], references: [id])
   relationShipId String?
+}
+
+model Assets {
+  id              String @id @default(cuid())
+  image_url       String
+  placeholder_url String
+
+  width  Int
+  height Int
+
+  Memories   Memories? @relation(fields: [memoriesId], references: [id])
+  memoriesId String?
+
+  createdAt DateTime @default(now())
 }

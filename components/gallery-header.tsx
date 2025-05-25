@@ -12,11 +12,13 @@ export function GalleryHeader({
     content,
     date,
     location,
+    setUploadModalOpen
 }: {
     users: User[];
     content: string;
     date: Date;
     location: string | null;
+    setUploadModalOpen: (open: boolean) => void;
 }) {
     return (
         <Card className="w-full">
@@ -35,7 +37,7 @@ export function GalleryHeader({
                         <Button size="icon" variant="secondary">
                             <Share2Icon className="h-4 w-4" />
                         </Button>
-                        <Button size="icon" variant="outline">
+                        <Button size="icon" variant="outline" onClick={() => setUploadModalOpen(true)}>
                             <Upload className="h-4 w-4" />
                         </Button>
                     </div>

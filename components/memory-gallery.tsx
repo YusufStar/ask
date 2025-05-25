@@ -1,7 +1,7 @@
 "use client"
 
 import { getMyShipMemories } from "@/actions/getMyRelationship";
-import { Memories } from "@prisma/client";
+import { Assets, Memories } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Heart, Loader } from "lucide-react";
@@ -18,7 +18,7 @@ export default function MemoryGallery({
     firstMemories,
     users
 }: {
-    firstMemories: Memories[];
+    firstMemories: Awaited<ReturnType<typeof getMyShipMemories>>;
     users: {
         id: string;
         clerkId: string;
@@ -30,6 +30,7 @@ export default function MemoryGallery({
 }) {
     const router = useRouter()
     const [open, setOpen] = useState(false);
+    // @ts-ignore
     const { data, isPlaceholderData, refetch } = useQuery({
         queryKey: ['memories'],
         queryFn: getMyShipMemories,
