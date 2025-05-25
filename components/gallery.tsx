@@ -13,7 +13,7 @@ export default function Gallery({
     memoryId: string;
     placeholderData: Awaited<ReturnType<typeof getMemoryById>>;
 }) {
-    const { data, isPlaceholderData, refetch } = useQuery<Awaited<ReturnType<typeof getMemoryById>>>({
+    const { data, isPlaceholderData } = useQuery<Awaited<ReturnType<typeof getMemoryById>>>({
         queryKey: ['memory', memoryId],
         placeholderData: placeholderData,
         queryFn: () => getMemoryById(memoryId),
