@@ -18,12 +18,24 @@ export async function getMyRelationship() {
         where: {
             users: {
                 some: {
-                    id: userId,
+                    clerkId: userId,
                 },
             }
         },
         include: {
-            users: true,
+            users: {
+                select: {
+                    id: true,
+                    clerkId: true,
+                    avatar: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                    relationShipCode: false,
+                    createdAt: false,
+                    updatedAt: false,
+                }
+            },
             memories: true,
         },
     })
@@ -58,4 +70,34 @@ export async function getMyShipCode() {
     }
 
     return userData.relationShipCode
+}
+
+export async function getMyShipMemories() {
+    const { userId } = await auth()
+    if (!userId) {
+        throw new Error("User not authenticated")
+    }
+
+    const user = await currentUser()
+    if (!user) {
+        throw new Error("User not found")
+    }
+
+    const relationship = await prisma.relationShip.findFirst({
+        where: {
+            users: {
+                some: {
+                    clerkId: userId,
+                },
+            }
+        },
+        select: {
+            memories: true,
+        },
+    })
+    if (!relationship) {
+        return []
+    }
+
+    return relationship.memories
 }
