@@ -1,6 +1,5 @@
 import { VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 import { Avatar, AvatarFallback, AvatarImage, avatarVariants } from "./avatar";
 import { cn } from "@/lib/utils";
 

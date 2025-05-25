@@ -93,6 +93,7 @@ export async function getMyShipMemories() {
         },
         select: {
             memories: true,
+            users: true,
         },
     })
     if (!relationship) {
@@ -100,4 +101,41 @@ export async function getMyShipMemories() {
     }
 
     return relationship.memories
+}
+
+export async function getMemoryById(id: string) {
+    const { userId } = await auth()
+    if(!userId) {
+        throw new Error("User not authenticated")
+    }
+
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("User not found")
+    }
+
+    const memory = await prisma.memories.findUnique({
+        where: {
+            id,
+            RelationShip: {
+                users: {
+                    some: {
+                        clerkId: userId,
+                    }
+                }
+            }
+        },
+        include: {
+            RelationShip: {
+                include: {
+                    users: true,
+                }
+            }
+        }
+    })
+    if(!memory) {
+        throw new Error("Memory not found")
+    }
+
+    return memory
 }
