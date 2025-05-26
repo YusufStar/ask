@@ -83,6 +83,7 @@ export default function Gallery({
                     loading={index < 4 ? 'eager' : 'lazy'}
                     className="rounded-lg"
                     priority={index < 4}
+                    quality={80}
                 />
             </div>
         );
