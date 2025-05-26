@@ -64,7 +64,6 @@ model Memories {
 model Assets {
   id              String @id @default(cuid())
   image_url       String
-  placeholder_url String
 
   width  Int
   height Int

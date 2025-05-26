@@ -64,7 +64,7 @@ export default function UploadModalOpen({
     const handleUpload = async () => {
         if (isUploading || creating) return;
         setCreating(true);
-        const uploaded: { image_url: string; placeholder_url: string }[] = [];
+        const uploaded: string[] = [];
         for (const file of files) {
             const key = getFileKey(file);
             if (filesProgress[key] === 100) continue;
@@ -72,11 +72,7 @@ export default function UploadModalOpen({
             setFileProgress(key, 0);
             try {
                 const response = await uploadAsset(file);
-                const formated = {
-                    image_url: response.image,
-                    placeholder_url: response.placeholder
-                };
-                uploaded.push(formated);
+                uploaded.push(response.image);
                 setFileProgress(key, 100);
             } catch {
                 setFileProgress(key, 0);

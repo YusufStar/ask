@@ -46,7 +46,7 @@ const assetAxios = axios.create({
     timeout: 30000, // 30 seconds timeout
 });
 
-export const uploadAsset = async (file: File): Promise<{ placeholder: string; image: string }> => {
+export const uploadAsset = async (file: File): Promise<{ image: string }> => {
     const formData = new FormData();
     formData.append('file', file);
 

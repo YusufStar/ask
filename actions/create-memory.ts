@@ -48,10 +48,7 @@ export const createMemory = async (data: {
     })
 }
 
-export const uploadMemoryAssets = async (memoryId: string, assets: {
-    image_url: string;
-    placeholder_url: string;
-}[]) => {
+export const uploadMemoryAssets = async (memoryId: string, assets: string[]) => {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("User not authenticated")
@@ -64,12 +61,11 @@ export const uploadMemoryAssets = async (memoryId: string, assets: {
 
     const processed = await Promise.all(
         (assets).map(async (asset) => {
-            const arrayBuffer = await imgUrlToBlog(await getAsset(asset.image_url));
+            const arrayBuffer = await imgUrlToBlog(await getAsset(asset));
             const { width, height } = imageMeta(new Uint8Array(arrayBuffer));
 
             return {
-                image_url: asset.image_url,
-                placeholder_url: asset.placeholder_url,
+                image_url: asset,
                 width: Number(width),
                 height: Number(height),
             };
